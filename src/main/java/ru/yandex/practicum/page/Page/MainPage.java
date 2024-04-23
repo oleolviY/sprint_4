@@ -7,26 +7,37 @@ import org.openqa.selenium.WebElement;
 
 public class MainPage {
     private final WebDriver webDriver;
-    private final By createOrderBtn = By.xpath("//div[contains(@class, 'Header')]/button[text()='Заказать']");
+    private final By createOrderHeaderBtn = By.xpath("//div[contains(@class, 'Header')]/button[text()='Заказать']");
+    private final By createOrderMiddleBtn = By.xpath("//button[contains(@class, 'Middle') and text()='Заказать']");
     private final String questionLocator = "accordion__heading-%s";
     private final String answerLocator = "//div[contains(@id, 'accordion__panel')][.='%s']";
     private final By cookiesBtn = By.id("rcc-confirm-button");
-    public MainPage(WebDriver webDriver){
+
+    public MainPage(WebDriver webDriver) {
         this.webDriver = webDriver;
     }
-    public void closeCookiesWindow(){
+
+    public void closeCookiesWindow() {
         webDriver.findElement(cookiesBtn).click();
     }
-    public void expandQuestion(int index){
+
+    public void expandQuestion(int index) {
         WebElement element = webDriver.findElement(By.id(String.format(questionLocator, index)));
         ((JavascriptExecutor) webDriver).executeScript("arguments[0].scrollIntoView();", element);
         element.click();
     }
-    public boolean answerIsDisplayed(String expectedAnswer){
+
+    public boolean answerIsDisplayed(String expectedAnswer) {
         WebElement element = webDriver.findElement(By.xpath(String.format(answerLocator, expectedAnswer)));
-        return  element.isDisplayed();
+        return element.isDisplayed();
     }
-    public void createOrderBtnClick() {
-        webDriver.findElement(createOrderBtn).click();
+
+    public void createOrderBtnClick(String button) {
+        if (button == "Header") {
+            webDriver.findElement(createOrderHeaderBtn).click();
+        } else {
+            webDriver.findElement(createOrderMiddleBtn).click();
+        }
     }
+
 }

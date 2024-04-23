@@ -8,6 +8,7 @@ import java.time.Duration;
 
 public class OrderPage {
     private final WebDriver webDriver;
+    private WebElement colorCheckBox;
     private final By firstNameInputLocator = By.xpath("//input[@placeholder='* Имя']");
     private final By lastNameInputLocator = By.xpath("//input[@placeholder='* Фамилия']");
     private final By addressInputLocator = By.xpath("//input[@placeholder='* Адрес: куда привезти заказ']");
@@ -17,7 +18,8 @@ public class OrderPage {
     private final By dateInputLocator = By.xpath("//input[@placeholder='* Когда привезти самокат']");
     private final By periodInputLocator = By.xpath("//div[text()='* Срок аренды']");
     private final By periodItemLocator = By.xpath("//div[text()='сутки']");
-    private final By colorCheckBoxLocator = By.id("grey");
+    private final By greyCheckBoxLocator = By.id("grey");
+    private final By blackCheckBoxLocator = By.id("black");
     private final By commentInputLocator = By.xpath("//input[@placeholder='Комментарий для курьера']");
     private final By orderBtnLocator = By.xpath("//div[contains(@class, 'Order')]/button[text()='Заказать']");
     private final By confirmBtnLocator = By.xpath("//button[text()='Да']");
@@ -44,28 +46,39 @@ public class OrderPage {
         WebElement nextBtn = webDriver.findElement(nextBtnLocator);
         nextBtn.click();
     }
-    public void fillRentalInfo(String date, String comment) {
+
+    public void fillRentalInfo(String date, String color, String comment) {
         WebElement dateInput = webDriver.findElement(dateInputLocator);
         dateInput.sendKeys(date, Keys.ENTER);
         WebElement periodInput = webDriver.findElement(periodInputLocator);
         periodInput.click();
         WebElement periodItem = webDriver.findElement(periodItemLocator);
         periodItem.click();
-        WebElement colorCheckBox = webDriver.findElement(colorCheckBoxLocator);
-        colorCheckBox.click();
+        selectColor(color);
         WebElement commentInput = webDriver.findElement(commentInputLocator);
         commentInput.sendKeys(comment);
         WebElement orderBtn = webDriver.findElement(orderBtnLocator);
         orderBtn.click();
     }
-    public void confirm(){
+
+    public void selectColor(String color) {
+        if (color == "grey") {
+            colorCheckBox = webDriver.findElement(greyCheckBoxLocator);
+        } else {
+            colorCheckBox = webDriver.findElement(blackCheckBoxLocator);
+        }
+        colorCheckBox.click();
+    }
+
+    public void confirm() {
         WebElement confirmBtn = webDriver.findElement(confirmBtnLocator);
         new WebDriverWait(webDriver, Duration.ofSeconds(3))
                 .until(ExpectedConditions.elementToBeClickable(confirmBtnLocator));
         confirmBtn.click();
     }
-    public boolean orderIsSuccess(){
-        WebElement element =  webDriver.findElement(orderSuccessLocator);
-        return  element.isDisplayed();
+
+    public boolean orderIsSuccess() {
+        WebElement element = webDriver.findElement(orderSuccessLocator);
+        return element.isDisplayed();
     }
 }
