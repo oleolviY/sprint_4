@@ -14,8 +14,7 @@ import static org.junit.Assert.assertTrue;
 
 
 @RunWith(Parameterized.class)
-public class OrderTest {
-    private static final String BROWSER = "firefox";
+public class OrderTest extends TestHelper {
     private final String button;
     private final String firstName;
     private final String lastName;
@@ -25,7 +24,6 @@ public class OrderTest {
     private final String date;
     private final String color;
     private final String comment;
-    private WebDriver webDriver;
 
     public OrderTest(String button, String firstName, String lastName, String address, String subway, String phone, String date, String color, String comment) {
         this.button = button;
@@ -48,12 +46,6 @@ public class OrderTest {
     }
 
 
-    @Before
-    public void setUp() {
-        webDriver = WebDriverFactory.getWebDriver(BROWSER);
-        webDriver.get("https://qa-scooter.praktikum-services.ru");
-    }
-
     @Test
     public void orderTest() {
         MainPage maimPage = new MainPage(webDriver);
@@ -65,11 +57,6 @@ public class OrderTest {
         orderPage.confirm();
         boolean orderIsSuccess = orderPage.orderIsSuccess();
         assertTrue(orderIsSuccess);
-    }
-
-    @After
-    public void tearDown() {
-        webDriver.quit();
     }
 
 }

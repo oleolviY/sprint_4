@@ -13,11 +13,11 @@ import ru.yandex.practicum.page.WebDriverFactory;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
-public class FaqTest {
-    private static final String BROWSER = "chrome";
-    private WebDriver webDriver;
+public class FaqTest extends TestHelper {
+
     private final int index;
     private final String answer;
+
 
     public FaqTest(int index, String answer) {
         this.index = index;
@@ -38,11 +38,6 @@ public class FaqTest {
         };
     }
 
-    @Before
-    public void setUp() {
-        webDriver = WebDriverFactory.getWebDriver(BROWSER);
-        webDriver.get("https://qa-scooter.praktikum-services.ru");
-    }
 
     @Test
     public void faqTest() {
@@ -55,9 +50,5 @@ public class FaqTest {
 
     }
 
-    @After
-    public void tearDown() {
-        webDriver.quit();
-    }
 
 }
